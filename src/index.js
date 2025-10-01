@@ -9,7 +9,17 @@ const path = require("path");
 const app = express();
 
 // ✅ Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",                 // local Vite dev
+      "https://task-agent-frontend.vercel.app" // deployed frontend
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // ✅ Serve static files (uploads folder)
@@ -19,13 +29,11 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/tasks", require("./routes/tasks"));
-app.use("/api/files", require("./routes/files"));  // 📁 File Upload Route
+app.use("/api/files", require("./routes/files")); // 📁 File Upload Route
 
 // ✅ MongoDB Connection
 mongoose
-  .connect(process.env.MONGO_URI, {
-    // modern mongoose no need useNewUrlParser & useUnifiedTopology
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Error:", err.message));
 
