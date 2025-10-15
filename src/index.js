@@ -29,7 +29,8 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/tasks", require("./routes/tasks"));
-app.use("/api/files", require("./routes/files")); // 📁 File Upload Route
+app.use("/api/files", require("./routes/files"));
+app.use("/api/ai", require("./routes/ai"));  
 
 // ✅ MongoDB Connection
 mongoose
